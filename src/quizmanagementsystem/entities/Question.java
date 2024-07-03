@@ -22,7 +22,7 @@ import services.Database_Connection;
  */
 public class Question {
     private String id;
-    private String quizId;
+    private String subjectId;
     private String statement;
     private String options; // Oprions Seprated by %%
     private String answer; // A/B/C/D
@@ -36,12 +36,12 @@ public class Question {
         this.id = id;
     }
 
-    public String getQuizId() {
-        return quizId;
+    public String getSubjectId() {
+        return subjectId;
     }
 
-    public void setQuizId(String quizId) {
-        this.quizId = quizId;
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
     }
 
     public String getStatement() {
@@ -83,7 +83,7 @@ public class Question {
         try {
             PreparedStatement ps = con.prepareStatement("Insert into question values (?, ?, ?, ?, ?, ?)");
             ps.setString(1, this.id);
-            ps.setString(2, this.quizId);
+            ps.setString(2, this.subjectId);
             ps.setString(3, this.statement);
             ps.setString(4, this.options);
             ps.setString(5, this.answer);
@@ -136,7 +136,7 @@ public class Question {
             while(rs.next()){
                 Question q = new Question();
                 q.setId(rs.getString("id"));
-                q.setQuizId(rs.getString("quizId"));
+                q.setSubjectId(rs.getString("subjectId"));
                 q.setOptions(rs.getString("options"));
                 q.setAnswer(rs.getString("answer"));
                 q.setStatement(rs.getString("statement"));

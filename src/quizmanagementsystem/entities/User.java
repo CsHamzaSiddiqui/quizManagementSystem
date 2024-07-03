@@ -133,16 +133,21 @@ public class User {
         }
     }
     
-    public Boolean login(String userName, String password){
+    public Boolean login(){
         Connection con = database_Connection.db_connction();
         try {
             
             PreparedStatement ps = con.prepareStatement("select * from user where userName = ? and password = ? and deleted = ?");
-            ps.setString(1, userName);
-            ps.setString(2, password);
+            ps.setString(1, this.userName);
+            ps.setString(2, this.password);
             ps.setBoolean(3, false);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
+                this.name = rs.getString("name");
+                this.role = rs.getString("role");
+                this.email = rs.getString("email");
+                this.id = rs.getString("id");
+                this.deleted = rs.getBoolean("deleted");
                 System.out.println("userEntity: login successfully...");
                 return true;
             } else {

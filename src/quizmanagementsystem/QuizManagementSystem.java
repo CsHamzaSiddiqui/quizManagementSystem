@@ -15,6 +15,13 @@ public class QuizManagementSystem {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        String javaHome = System.getenv("DB_PATH");
+        String userHome = System.getenv("USERPROFILE");
+        String os = System.getenv("OS");
+
+        System.out.println("JAVA_HOME: " + javaHome);
+        System.out.println("USERPROFILE: " + userHome);
+        System.out.println("OS: " + os);
         // TODO code application logic here
     }
     

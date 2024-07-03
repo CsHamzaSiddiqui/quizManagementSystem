@@ -27,7 +27,7 @@ public class Database_Connection {
     public Database_Connection()
     {
         this.con=null;
-        this.url=new Common().getEnvVariable("DB_PATH");
+        this.url=Common.getEnvVariable("DB_PATH");
     }
     public Connection db_connction()
     {

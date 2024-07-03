@@ -15,12 +15,12 @@ import javax.swing.JOptionPane;
  */
 public class Common {
     
-    public String generatePrimaryKey(){
+    public static String generatePrimaryKey(){
         UUID uniqueID = UUID.randomUUID();
         return uniqueID.toString();
     }
     
-    public String getEnvVariable(String variableName) {
+    public static String getEnvVariable(String variableName) {
         String value = System.getenv(variableName);
         if (value != null) {
             System.out.println(variableName + ": " + value);
@@ -29,6 +29,13 @@ public class Common {
             JOptionPane.showMessageDialog(null, variableName + " environment variable is not set.");
         }
         return value;
+    }
+    
+    public static boolean isEmptyString(String str) {
+        if(str == null || str.equals("")){
+            return true;
+        }
+        return false;
     }
     
 }
