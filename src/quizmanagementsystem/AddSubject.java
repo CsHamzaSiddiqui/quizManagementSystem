@@ -5,17 +5,37 @@
  */
 package quizmanagementsystem;
 
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import quizmanagementsystem.entities.Subject;
+import utils.Common;
+
 /**
  *
  * @author Hassaan.Siddique
  */
 public class AddSubject extends javax.swing.JPanel {
+    List<Subject> subjectList = new ArrayList<>();
+    static DefaultTableModel tableModel;
+    static int i = 1;
+    static int selectedRow;
 
     /**
      * Creates new form AddQuestion
      */
     public AddSubject() {
         initComponents();
+        tableModel = (DefaultTableModel) subjects.getModel();
+        subjectList = new Subject().getAll();
+        for (Subject subject : subjectList){
+            addTableRow(subject);
+        }
+        subjects.setModel(tableModel);
     }
 
     /**
@@ -28,188 +48,354 @@ public class AddSubject extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        option2 = new javax.swing.JTextField();
-        statement = new javax.swing.JTextField();
-        option1 = new javax.swing.JTextField();
-        option4 = new javax.swing.JTextField();
-        correctOption = new javax.swing.JTextField();
-        option3 = new javax.swing.JTextField();
+        subjects = new javax.swing.JTable();
+        deleteButton = new javax.swing.JButton();
+        updateButton = new javax.swing.JButton();
+        time = new javax.swing.JTextField();
+        name = new javax.swing.JTextField();
+        instruction = new javax.swing.JTextField();
+        pmarks = new javax.swing.JTextField();
+        length = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        subject = new javax.swing.JComboBox();
-        jLabel8 = new javax.swing.JLabel();
-        subjectFilter = new javax.swing.JComboBox();
-        jButton4 = new javax.swing.JButton();
+        addButton = new javax.swing.JButton();
+        marks = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        name1 = new javax.swing.JTextField();
+        addButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(102, 102, 102));
         setPreferredSize(new java.awt.Dimension(1500, 700));
         setLayout(null);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        subjects.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Sr. No", "Name", "Instruction", "Quize Length", "Total Marks", "Passing Marks", "Time"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        subjects.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                subjectsMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(subjects);
 
         add(jScrollPane1);
         jScrollPane1.setBounds(0, 442, 1510, 260);
 
-        jButton1.setText("Delete Question");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        deleteButton.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        deleteButton.setText("Delete Subject");
+        deleteButton.setEnabled(false);
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                deleteButtonActionPerformed(evt);
             }
         });
-        add(jButton1);
-        jButton1.setBounds(1310, 360, 170, 50);
+        add(deleteButton);
+        deleteButton.setBounds(1310, 360, 170, 50);
 
-        jButton2.setText("Filter");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        updateButton.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        updateButton.setText("Update Subject");
+        updateButton.setEnabled(false);
+        updateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                updateButtonActionPerformed(evt);
             }
         });
-        add(jButton2);
-        jButton2.setBounds(490, 380, 120, 40);
+        add(updateButton);
+        updateButton.setBounds(1110, 360, 170, 50);
 
-        jButton3.setText("Update Question");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+        time.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        time.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                timeKeyPressed(evt);
             }
         });
-        add(jButton3);
-        jButton3.setBounds(1110, 360, 170, 50);
+        add(time);
+        time.setBounds(1000, 120, 380, 40);
 
-        option2.setText("jTextField1");
-        add(option2);
-        option2.setBounds(1000, 120, 380, 40);
+        name.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        add(name);
+        name.setBounds(310, 40, 380, 40);
 
-        statement.setText("jTextField1");
-        add(statement);
-        statement.setBounds(310, 40, 1080, 40);
+        instruction.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        add(instruction);
+        instruction.setBounds(310, 270, 1070, 40);
 
-        option1.setText("jTextField1");
-        add(option1);
-        option1.setBounds(310, 120, 380, 40);
+        pmarks.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        pmarks.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pmarksActionPerformed(evt);
+            }
+        });
+        pmarks.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                pmarksKeyPressed(evt);
+            }
+        });
+        add(pmarks);
+        pmarks.setBounds(310, 120, 380, 40);
 
-        option4.setText("jTextField1");
-        add(option4);
-        option4.setBounds(1000, 190, 380, 40);
-
-        correctOption.setText("jTextField1");
-        add(correctOption);
-        correctOption.setBounds(310, 260, 380, 40);
-
-        option3.setText("jTextField1");
-        add(option3);
-        option3.setBounds(310, 190, 380, 40);
+        length.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        length.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                lengthFocusLost(evt);
+            }
+        });
+        length.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lengthActionPerformed(evt);
+            }
+        });
+        length.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                lengthKeyPressed(evt);
+            }
+        });
+        add(length);
+        length.setBounds(310, 190, 380, 40);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Option A");
+        jLabel1.setText("Quiz Instruction");
         add(jLabel1);
-        jLabel1.setBounds(80, 120, 200, 40);
+        jLabel1.setBounds(80, 270, 200, 40);
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Question Statement");
+        jLabel2.setText("Subject Name");
         add(jLabel2);
         jLabel2.setBounds(80, 40, 200, 40);
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Correct Option");
+        jLabel3.setText("Passing Marks");
         add(jLabel3);
-        jLabel3.setBounds(80, 260, 200, 40);
+        jLabel3.setBounds(80, 120, 200, 40);
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("Option C");
+        jLabel4.setText("No. of questions");
         add(jLabel4);
         jLabel4.setBounds(80, 190, 200, 40);
 
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Subject Name");
-        add(jLabel5);
-        jLabel5.setBounds(760, 260, 200, 40);
-
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Option D");
+        jLabel6.setText("Total Marks");
         add(jLabel6);
         jLabel6.setBounds(760, 190, 200, 40);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Option B");
+        jLabel7.setText("Quiz Time (min)");
         add(jLabel7);
         jLabel7.setBounds(760, 120, 200, 40);
 
-        subject.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(subject);
-        subject.setBounds(1000, 260, 380, 40);
-
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Subject Name");
-        add(jLabel8);
-        jLabel8.setBounds(30, 380, 120, 40);
-
-        subjectFilter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(subjectFilter);
-        subjectFilter.setBounds(160, 380, 300, 40);
-
-        jButton4.setText("Add Question");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        addButton.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        addButton.setText("Add Subject");
+        addButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                addButtonActionPerformed(evt);
             }
         });
-        add(jButton4);
-        jButton4.setBounds(920, 360, 170, 50);
+        add(addButton);
+        addButton.setBounds(910, 360, 170, 50);
+
+        marks.setEditable(false);
+        marks.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        add(marks);
+        marks.setBounds(1000, 190, 380, 40);
+
+        jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Subject Name");
+        add(jLabel5);
+        jLabel5.setBounds(80, 40, 200, 40);
+
+        name1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        add(name1);
+        name1.setBounds(310, 40, 380, 40);
+
+        addButton1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        addButton1.setText("Reset");
+        addButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addButton1ActionPerformed(evt);
+            }
+        });
+        add(addButton1);
+        addButton1.setBounds(710, 360, 170, 50);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        if(isAllFieldsFilled()){
+            Subject subject = new Subject();
+            subject.setId(subjectList.stream().filter(x -> x.getName().equals(name.getText())).findFirst().get().getId());
+            subject.delete();
+            tableModel.removeRow(selectedRow);
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please fill all fields.");
+        }
+// TODO add your handling code here:
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
+        if(isAllFieldsFilled()){
+            Subject subject = new Subject();
+            subject.setId(subjectList.stream().filter(x -> x.getName().equals(name.getText())).findFirst().get().getId());
+            subject.setName(name.getText());
+            subject.setQuizInstructions(instruction.getText());
+            subject.setPassingMarks(Integer.parseInt(pmarks.getText()));
+            subject.setQuizLength(Integer.parseInt(length.getText()));
+            subject.setQuizTime(Integer.parseInt(time.getText()));
+            subject.setDeleted(false);
+            subject.update();
+            updateTableRow(subject);
+            clear();
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Please fill all fields.");
+        }
+// TODO add your handling code here:
+    }//GEN-LAST:event_updateButtonActionPerformed
+
+    private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
+        if(isAllFieldsFilled()){
+            Subject subject = new Subject();
+            subject.setId(Common.generatePrimaryKey());
+            subject.setName(name.getText());
+            subject.setQuizInstructions(instruction.getText());
+            subject.setPassingMarks(Integer.parseInt(pmarks.getText()));
+            subject.setQuizLength(Integer.parseInt(length.getText()));
+            subject.setQuizTime(Integer.parseInt(time.getText()));
+            subject.setDeleted(false);
+            subject.save();
+            addTableRow(subject);
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please fill all fields.");
+        }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_addButtonActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void lengthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lengthActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_lengthActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void lengthFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lengthFocusLost
+        marks.setText(length.getText());
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_lengthFocusLost
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void pmarksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pmarksActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_pmarksActionPerformed
 
+    private void pmarksKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pmarksKeyPressed
+        if(Character.isDigit(evt.getKeyChar()) || evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getKeyChar() == KeyEvent.VK_DELETE) {
+            pmarks.setEditable(true);
+        } else {
+            pmarks.setEditable(false);
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pmarksKeyPressed
 
+    private void timeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_timeKeyPressed
+        if(Character.isDigit(evt.getKeyChar()) || evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getKeyChar() == KeyEvent.VK_DELETE) {
+            time.setEditable(true);
+        } else {
+            time.setEditable(false);
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timeKeyPressed
+
+    private void lengthKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lengthKeyPressed
+        if(Character.isDigit(evt.getKeyChar()) || evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getKeyChar() == KeyEvent.VK_DELETE) {
+            length.setEditable(true);
+        } else {
+            length.setEditable(false);
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_lengthKeyPressed
+
+    private void subjectsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_subjectsMouseClicked
+        name.setEditable(false);
+        addButton.setEnabled(false);
+        updateButton.setEnabled(true);
+        deleteButton.setEnabled(true);
+        selectedRow = subjects.getSelectedRow();
+        name.setText((String) subjects.getValueAt(selectedRow, 1));
+        instruction.setText(String.valueOf(subjects.getValueAt(selectedRow, 2)));
+        length.setText(String.valueOf(subjects.getValueAt(selectedRow, 3)));
+        marks.setText(String.valueOf(subjects.getValueAt(selectedRow, 4)));
+        pmarks.setText(String.valueOf(subjects.getValueAt(selectedRow, 5)));
+        time.setText(String.valueOf(subjects.getValueAt(selectedRow, 6)));
+        
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_subjectsMouseClicked
+
+    private void addButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButton1ActionPerformed
+        clear();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addButton1ActionPerformed
+    
+    public void clear(){
+        name.setEditable(true);
+        addButton.setEnabled(true);
+        updateButton.setEnabled(false);
+        deleteButton.setEnabled(false);
+        name.setText("");
+        instruction.setText("");
+        length.setText("");
+        marks.setText("");
+        pmarks.setText("");
+        time.setText("");
+    }
+    
+    public void addTableRow(Subject subject){
+        Vector<Object> row = new Vector<>();
+        row.add(i);
+        row.add(subject.getName());
+        row.add(subject.getQuizInstructions());
+        row.add(subject.getQuizLength());
+        row.add(subject.getQuizLength());
+        row.add(subject.getPassingMarks());
+        row.add(subject.getQuizTime());
+        tableModel.addRow(row);
+        i++;
+    }
+    
+    public void updateTableRow(Subject subject){
+        tableModel.setValueAt(subject.getQuizInstructions(), selectedRow, 2);
+        tableModel.setValueAt(subject.getQuizLength(), selectedRow, 3);
+        tableModel.setValueAt(subject.getQuizLength(), selectedRow, 4);
+        tableModel.setValueAt(subject.getPassingMarks(), selectedRow, 5);
+        tableModel.setValueAt(subject.getQuizTime(), selectedRow, 6);
+    }
+    
+    public boolean isAllFieldsFilled(){
+        return !Common.isEmptyString(name.getText()) &&
+                !Common.isEmptyString(instruction.getText()) &&
+                !Common.isEmptyString(length.getText()) &&
+                !Common.isEmptyString(marks.getText()) &&
+                !Common.isEmptyString(pmarks.getText()) &&
+                !Common.isEmptyString(time.getText());
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField correctOption;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton addButton;
+    private javax.swing.JButton addButton1;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JTextField instruction;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -217,15 +403,14 @@ public class AddSubject extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField option1;
-    private javax.swing.JTextField option2;
-    private javax.swing.JTextField option3;
-    private javax.swing.JTextField option4;
-    private javax.swing.JTextField statement;
-    private javax.swing.JComboBox subject;
-    private javax.swing.JComboBox subjectFilter;
+    private javax.swing.JTextField length;
+    private javax.swing.JTextField marks;
+    private javax.swing.JTextField name;
+    private javax.swing.JTextField name1;
+    private javax.swing.JTextField pmarks;
+    private javax.swing.JTable subjects;
+    private javax.swing.JTextField time;
+    private javax.swing.JButton updateButton;
     // End of variables declaration//GEN-END:variables
 }

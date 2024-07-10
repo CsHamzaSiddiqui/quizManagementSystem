@@ -93,7 +93,7 @@ public class Subject {
     public void save(){
         Connection con = database_Connection.db_connction();
         try {
-            PreparedStatement ps = con.prepareStatement("Insert into quiz values (?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps = con.prepareStatement("Insert into subject values (?, ?, ?, ?, ?, ?, ?)");
             ps.setString(1, this.id);
             ps.setString(2, this.name);
             ps.setString(3, this.quizInstructions);
@@ -116,7 +116,7 @@ public class Subject {
         }
     }
     
-    public List<Subject> getAllByUserId(String userId){
+    public List<Subject> getAll(){
         Connection con = database_Connection.db_connction();
         List<Subject> subjectList = new ArrayList<>();
         try {
@@ -146,6 +146,32 @@ public class Subject {
             }
         }
         return subjectList;
+    }
+    
+    public void update(){
+        Connection con = database_Connection.db_connction();
+        try {
+            PreparedStatement ps = con.prepareStatement("update subject set name = ?, quizInstructions=? , quizLength = ? , quizTime = ? , passingMarks = ? where id = ?");
+            ps.setString(1, this.name);
+            ps.setString(2, this.quizInstructions);
+            ps.setInt(4, this.quizTime);
+            ps.setInt(3, this.quizLength);
+            ps.setInt(5, this.passingMarks);
+            ps.setString(6, this.id);
+            ps.executeUpdate();
+            System.out.println("subjectEntity: Subject upadted successfully...");
+            JOptionPane.showMessageDialog(null, "Subject updated Successfully...");
+            new Question().deleteBySubject(this.id);
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                con.close();
+                System.out.println("subjectEntity: connection closed");
+            } catch (SQLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     public void delete(){

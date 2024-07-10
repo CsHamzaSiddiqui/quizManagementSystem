@@ -5,17 +5,57 @@
  */
 package quizmanagementsystem;
 
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import static quizmanagementsystem.AddSubject.i;
+import quizmanagementsystem.entities.Question;
+import quizmanagementsystem.entities.Subject;
+import utils.Common;
+
 /**
  *
  * @author Hassaan.Siddique
  */
 public class AddQuestion extends javax.swing.JPanel {
+    List<Subject> subjectList = new ArrayList<>();
+    List<String> optionList = new ArrayList<>();
+    HashMap<String, Subject> subjectMap = new HashMap<>();
+    DefaultComboBoxModel<String> subjectModel = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<String> filterModel = new DefaultComboBoxModel<>();
+    static DefaultTableModel tableModel;
+    static int i = 1;
+    static int selectedRow;
+    List<Question> questionList = new ArrayList<>();
 
     /**
      * Creates new form AddQuestion
      */
     public AddQuestion() {
         initComponents();
+        questionList = new Question().getAll();
+        tableModel = (DefaultTableModel) questionTable.getModel();
+        subjectModel.addElement("Select Subject Name");
+        filterModel.addElement("Select Subject Name");
+        subjectList = new Subject().getAll();
+        for (Subject sub: subjectList) {
+            subjectMap.put(sub.getName(), sub);
+            subjectModel.addElement(sub.getName());
+            filterModel.addElement(sub.getName());
+        }
+        subjectName.setModel(subjectModel);
+        filter.setModel(filterModel);
+        for (Question question : questionList){
+            addTableRow(question);
+        }
+        questionTable.setModel(tableModel);
     }
 
     /**
@@ -28,16 +68,16 @@ public class AddQuestion extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        questionTable = new javax.swing.JTable();
+        deleteQuestion = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        updateQuestion = new javax.swing.JButton();
+        option2 = new javax.swing.JTextField();
+        statement = new javax.swing.JTextField();
+        option1 = new javax.swing.JTextField();
+        option4 = new javax.swing.JTextField();
+        answer = new javax.swing.JTextField();
+        option3 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -45,40 +85,66 @@ public class AddQuestion extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        subjectName = new javax.swing.JComboBox();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jButton4 = new javax.swing.JButton();
+        filter = new javax.swing.JComboBox();
+        addQuestion = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        addQuestion1 = new javax.swing.JButton();
+        id = new javax.swing.JTextField();
 
         setBackground(new java.awt.Color(102, 102, 102));
         setPreferredSize(new java.awt.Dimension(1500, 700));
         setLayout(null);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        questionTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Sr. No", "Statement", "Option 1", "Option 2", "Option 3", "Option 4", "Answer", "Subject Name", "id"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, true, false
+            };
 
-        add(jScrollPane1);
-        jScrollPane1.setBounds(0, 442, 1510, 260);
-
-        jButton1.setText("Delete Question");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        add(jButton1);
-        jButton1.setBounds(1310, 360, 170, 50);
+        questionTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                questionTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(questionTable);
+        if (questionTable.getColumnModel().getColumnCount() > 0) {
+            questionTable.getColumnModel().getColumn(8).setResizable(false);
+            questionTable.getColumnModel().getColumn(8).setPreferredWidth(0);
+        }
+        if (questionTable.getColumnModel().getColumnCount() > 0) {
+            questionTable.getColumnModel().getColumn(8).setMaxWidth(0);
+            questionTable.getColumnModel().getColumn(8).setMinWidth(0);
+            questionTable.getColumnModel().getColumn(8).setWidth(0);
+            questionTable.getColumnModel().getColumn(8).setPreferredWidth(0);
+        }
 
+        add(jScrollPane1);
+        jScrollPane1.setBounds(10, 442, 1480, 260);
+
+        deleteQuestion.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        deleteQuestion.setText("Delete Question");
+        deleteQuestion.setEnabled(false);
+        deleteQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteQuestionActionPerformed(evt);
+            }
+        });
+        add(deleteQuestion);
+        deleteQuestion.setBounds(1310, 360, 170, 50);
+
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton2.setText("Filter");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,38 +154,45 @@ public class AddQuestion extends javax.swing.JPanel {
         add(jButton2);
         jButton2.setBounds(490, 380, 120, 40);
 
-        jButton3.setText("Update Question");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        updateQuestion.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        updateQuestion.setText("Update Question");
+        updateQuestion.setEnabled(false);
+        updateQuestion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                updateQuestionActionPerformed(evt);
             }
         });
-        add(jButton3);
-        jButton3.setBounds(1110, 360, 170, 50);
+        add(updateQuestion);
+        updateQuestion.setBounds(1110, 360, 170, 50);
+        add(option2);
+        option2.setBounds(1000, 120, 380, 40);
 
-        jTextField1.setText("jTextField1");
-        add(jTextField1);
-        jTextField1.setBounds(1000, 120, 380, 40);
+        statement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                statementActionPerformed(evt);
+            }
+        });
+        add(statement);
+        statement.setBounds(310, 40, 1080, 40);
+        add(option1);
+        option1.setBounds(310, 120, 380, 40);
+        add(option4);
+        option4.setBounds(1000, 190, 380, 40);
 
-        jTextField2.setText("jTextField1");
-        add(jTextField2);
-        jTextField2.setBounds(310, 40, 1080, 40);
-
-        jTextField3.setText("jTextField1");
-        add(jTextField3);
-        jTextField3.setBounds(310, 120, 380, 40);
-
-        jTextField4.setText("jTextField1");
-        add(jTextField4);
-        jTextField4.setBounds(1000, 190, 380, 40);
-
-        jTextField5.setText("jTextField1");
-        add(jTextField5);
-        jTextField5.setBounds(310, 260, 380, 40);
-
-        jTextField6.setText("jTextField1");
-        add(jTextField6);
-        jTextField6.setBounds(310, 190, 380, 40);
+        answer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                answerActionPerformed(evt);
+            }
+        });
+        answer.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                answerKeyPressed(evt);
+            }
+        });
+        add(answer);
+        answer.setBounds(310, 260, 380, 40);
+        add(option3);
+        option3.setBounds(310, 190, 380, 40);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -163,9 +236,9 @@ public class AddQuestion extends javax.swing.JPanel {
         add(jLabel7);
         jLabel7.setBounds(760, 120, 200, 40);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(jComboBox1);
-        jComboBox1.setBounds(1000, 260, 380, 40);
+        subjectName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Subject" }));
+        add(subjectName);
+        subjectName.setBounds(1000, 260, 380, 40);
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -173,44 +246,215 @@ public class AddQuestion extends javax.swing.JPanel {
         add(jLabel8);
         jLabel8.setBounds(30, 380, 120, 40);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        add(jComboBox2);
-        jComboBox2.setBounds(160, 380, 300, 40);
+        filter.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Subject" }));
+        add(filter);
+        filter.setBounds(160, 380, 300, 40);
 
-        jButton4.setText("Add Question");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        addQuestion.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        addQuestion.setText("Add Question");
+        addQuestion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                addQuestionActionPerformed(evt);
             }
         });
-        add(jButton4);
-        jButton4.setBounds(920, 360, 170, 50);
+        add(addQuestion);
+        addQuestion.setBounds(920, 360, 170, 50);
+
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Use single capital character i.e (A, B, C, D).");
+        add(jLabel9);
+        jLabel9.setBounds(310, 300, 310, 16);
+
+        addQuestion1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        addQuestion1.setText("Reset");
+        addQuestion1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addQuestion1ActionPerformed(evt);
+            }
+        });
+        add(addQuestion1);
+        addQuestion1.setBounds(730, 360, 170, 50);
+
+        id.setEditable(false);
+        id.setEnabled(false);
+        id.setVisible(false);
+        id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idActionPerformed(evt);
+            }
+        });
+        add(id);
+        id.setBounds(20, 0, 6, 22);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void deleteQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteQuestionActionPerformed
+        if(isAllFieldsFilled()){
+            Question question = new Question();
+            question.setId(id.getText());
+            question.delete();
+            tableModel.removeRow(selectedRow);
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please fill all fields.");
+        }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_deleteQuestionActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(filter.getSelectedIndex() != 0){
+            questionList = new Question().getAllBySubject((String) filter.getSelectedItem());
+        }else {
+            questionList = new Question().getAll();
+        }
+        tableModel.setRowCount(0);
+        questionList.stream().forEach(x -> addTableRow(x));
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void updateQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateQuestionActionPerformed
+        if(isAllFieldsFilled()){
+            optionList.add(option1.getText());
+            optionList.add(option2.getText());
+            optionList.add(option3.getText());
+            optionList.add(option4.getText());
+            Question question = new Question();
+            question.setId(id.getText());
+            question.setStatement(statement.getText());
+            question.setOptions(String.join("~~",optionList));
+            question.setAnswer(answer.getText());
+            question.setSubjectId((String) subjectName.getSelectedItem());
+            question.update();
+            updateTableRow(question);
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please fill all fields to add new Question.");
+        }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_updateQuestionActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void addQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addQuestionActionPerformed
+        if(isAllFieldsFilled()){
+            optionList.add(option1.getText());
+            optionList.add(option2.getText());
+            optionList.add(option3.getText());
+            optionList.add(option4.getText());
+            Question question = new Question();
+            question.setId(Common.generatePrimaryKey());
+            question.setStatement(statement.getText());
+            question.setOptions(String.join("~~",optionList));
+            question.setAnswer(answer.getText());
+            question.setSubjectId(subjectMap.get(subjectName.getSelectedItem().toString()).getName());
+            question.setDeleted(false);
+            question.save();
+            clear();
+        } else {
+            JOptionPane.showMessageDialog(null, "Please fill all fields to add new Question.");
+        }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_addQuestionActionPerformed
+
+    private void statementActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statementActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_statementActionPerformed
+
+    private void answerKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_answerKeyPressed
+        if((evt.getKeyChar() == 'A' || evt.getKeyChar() == 'B' || evt.getKeyChar() == 'C' || evt.getKeyChar() == 'D' || evt.getKeyCode() == KeyEvent.VK_BACK_SPACE || evt.getKeyChar() == KeyEvent.VK_DELETE) && answer.getText().length() == 0) {
+            answer.setEditable(true);
+        } else {
+            answer.setEditable(false);
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_answerKeyPressed
+
+    private void answerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_answerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_answerActionPerformed
+
+    private void addQuestion1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addQuestion1ActionPerformed
+        clear();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addQuestion1ActionPerformed
+
+    private void questionTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_questionTableMouseClicked
+        addQuestion.setEnabled(false);
+        updateQuestion.setEnabled(true);
+        deleteQuestion.setEnabled(true);
+        selectedRow = questionTable.getSelectedRow();
+        statement.setText((String) questionTable.getValueAt(selectedRow, 1));
+        option1.setText((String) questionTable.getValueAt(selectedRow, 2));
+        option2.setText((String) questionTable.getValueAt(selectedRow, 3));
+        option3.setText((String) questionTable.getValueAt(selectedRow, 4));
+        option4.setText((String) questionTable.getValueAt(selectedRow, 5));
+        answer.setText((String) questionTable.getValueAt(selectedRow, 6));
+        subjectName.setSelectedItem((String) questionTable.getValueAt(selectedRow, 7));
+        id.setText((String) questionTable.getValueAt(selectedRow, 8));
+        // TODO add your handling code here:
+    }//GEN-LAST:event_questionTableMouseClicked
+
+    private void idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idActionPerformed
 
 
+    public void clear(){
+        addQuestion.setEnabled(true);
+        updateQuestion.setEnabled(false);
+        deleteQuestion.setEnabled(false);
+        statement.setText("");
+        option1.setText("");
+        option2.setText("");
+        option3.setText("");
+        option4.setText("");
+        answer.setText("");
+        subjectName.setSelectedIndex(0);
+        filter.setSelectedIndex(0);
+    }
+    
+     public void addTableRow(Question question){
+        List<String> options = new ArrayList<>(Arrays.asList(question.getOptions().split("~~")));
+        Vector<Object> row = new Vector<>();
+        row.add(i);
+        row.add(question.getStatement());
+        row.add(options.get(0));
+        row.add(options.get(1));
+        row.add(options.get(2));
+        row.add(options.get(3));
+        row.add(question.getAnswer());
+        row.add(question.getSubjectId());
+        row.add(question.getId());
+        tableModel.addRow(row);
+        i++;
+    }
+     
+    public void updateTableRow(Question question){
+        List<String> options = new ArrayList<>(Arrays.asList(question.getOptions().split("~~")));
+        tableModel.setValueAt(question.getStatement(), selectedRow, 1);
+        tableModel.setValueAt(options.get(0), selectedRow, 2);
+        tableModel.setValueAt(options.get(1), selectedRow, 3);
+        tableModel.setValueAt(options.get(2), selectedRow, 4);
+        tableModel.setValueAt(options.get(3), selectedRow, 5);
+        tableModel.setValueAt(question.getAnswer(), selectedRow, 6);
+        tableModel.setValueAt(question.getSubjectId(), selectedRow, 7);
+    }
+    
+    public boolean isAllFieldsFilled(){
+        return !Common.isEmptyString(statement.getText()) &&
+                !Common.isEmptyString(option1.getText()) &&
+                !Common.isEmptyString(option2.getText()) &&
+                !Common.isEmptyString(option3.getText()) &&
+                !Common.isEmptyString(option4.getText()) &&
+                !Common.isEmptyString(answer.getText()) &&
+                subjectName.getSelectedIndex() != 0;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton addQuestion;
+    private javax.swing.JButton addQuestion1;
+    private javax.swing.JTextField answer;
+    private javax.swing.JButton deleteQuestion;
+    private javax.swing.JComboBox filter;
+    private javax.swing.JTextField id;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -219,13 +463,15 @@ public class AddQuestion extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField option1;
+    private javax.swing.JTextField option2;
+    private javax.swing.JTextField option3;
+    private javax.swing.JTextField option4;
+    private javax.swing.JTable questionTable;
+    private javax.swing.JTextField statement;
+    private javax.swing.JComboBox subjectName;
+    private javax.swing.JButton updateQuestion;
     // End of variables declaration//GEN-END:variables
 }

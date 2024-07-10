@@ -5,17 +5,31 @@
  */
 package quizmanagementsystem;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author Hassaan.Siddique
  */
 public class AdminHome extends javax.swing.JFrame {
-
+    
+    AddQuestion addQuestion = new AddQuestion();
+    AddSubject addSubject = new AddSubject();
     /**
      * Creates new form AdminHome
      */
     public AdminHome() {
         initComponents();
+        home.add(addQuestion);
+        addQuestion.setVisible(false);
+        addQuestion.setBackground(new java.awt.Color(102, 102, 102));
+        addQuestion.setBounds(0, 0, 1500, 700);
+        
+        
+        home.add(addSubject);
+        addSubject.setVisible(false);
+        addSubject.setBackground(new java.awt.Color(102, 102, 102));
+        addSubject.setBounds(0, 0, 1500, 700);
     }
 
     /**
@@ -29,7 +43,8 @@ public class AdminHome extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        header = new javax.swing.JLabel();
+        home = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -44,20 +59,26 @@ public class AdminHome extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
-        jButton3.setText("Logout");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-logout-52.png"))); // NOI18N
+        jButton3.setBorderPainted(false);
+        jButton3.setContentAreaFilled(false);
+        jButton3.setDefaultCapable(false);
+        jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton3);
-        jButton3.setBounds(1770, 100, 71, 25);
+        jButton3.setBounds(1740, 80, 50, 50);
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Admin Dashboard");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(770, 50, 410, 110);
+        header.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        header.setForeground(new java.awt.Color(255, 255, 255));
+        header.setText("Admin Dashboard");
+        jPanel1.add(header);
+        header.setBounds(770, 50, 580, 110);
+
+        home.setLayout(null);
 
         mainPanel.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -66,6 +87,11 @@ public class AdminHome extends javax.swing.JFrame {
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-add-properties-100.png"))); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton2.setBackground(new java.awt.Color(255, 255, 255));
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-add-properties-100 (1).png"))); // NOI18N
@@ -99,17 +125,23 @@ public class AdminHome extends javax.swing.JFrame {
                 .addContainerGap(347, Short.MAX_VALUE))
         );
 
-        jPanel1.add(mainPanel);
-        mainPanel.setBounds(200, 200, 1500, 700);
+        home.add(mainPanel);
+        mainPanel.setBounds(0, 0, 1500, 700);
 
-        jButton5.setText("Back");
+        jPanel1.add(home);
+        home.setBounds(170, 180, 1500, 700);
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-back-60.png"))); // NOI18N
+        jButton5.setBorderPainted(false);
+        jButton5.setContentAreaFilled(false);
+        jButton5.setFocusPainted(false);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton5);
-        jButton5.setBounds(60, 100, 59, 25);
+        jButton5.setBounds(70, 90, 50, 50);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loginback.jpg"))); // NOI18N
         jPanel1.add(jLabel2);
@@ -138,12 +170,26 @@ public class AdminHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        addQuestion.setVisible(false);
+        addSubject.setVisible(false);
+        mainPanel.setVisible(true);
+        header.setText("Admin Dashboard");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        mainPanel.setVisible(false);
+        addQuestion.setVisible(true);
+        header.setText("Question Management");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        mainPanel.setVisible(false);
+        addSubject.setVisible(true);
+        header.setText("Subject Management");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,12 +227,13 @@ public class AdminHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel header;
+    private javax.swing.JPanel home;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel mainPanel;

@@ -124,6 +124,58 @@ public class Question {
         }
     }
     
+    public void deleteBySubject(String subjectId){
+        Connection con = database_Connection.db_connction();
+        try {
+            PreparedStatement ps = con.prepareStatement("update question set deleted = ? where subjectId=?");
+            ps.setBoolean(1, true);
+            ps.setString(2, subjectId);
+            ps.executeUpdate();
+            System.out.println("questionEntity: question deleted successfully...");
+//            JOptionPane.showMessageDialog(null, "Question Deleted Successfully...");
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                con.close();
+                System.out.println("questionEntity: connection closed");
+            } catch (SQLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public List<Question> getAll(){
+        Connection con = database_Connection.db_connction();
+        List<Question> questionList = new ArrayList<>();
+        try {
+            
+            PreparedStatement ps = con.prepareStatement("select * from question where deleted = ?");
+            ps.setBoolean(1, false);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                Question q = new Question();
+                q.setId(rs.getString("id"));
+                q.setSubjectId(rs.getString("subjectId"));
+                q.setOptions(rs.getString("options"));
+                q.setAnswer(rs.getString("answer"));
+                q.setStatement(rs.getString("statement"));
+                q.setDeleted(false);
+                questionList.add(q);
+            } 
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                con.close();
+                System.out.println("questionEntity: connection closed");
+            } catch (SQLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return questionList;
+    }
+    
     public List<Question> getAllBySubject(String subjectId){
         Connection con = database_Connection.db_connction();
         List<Question> questionList = new ArrayList<>();
@@ -154,6 +206,30 @@ public class Question {
             }
         }
         return questionList;
+    }
+    
+    public void update(){
+        Connection con = database_Connection.db_connction();
+        try {
+            PreparedStatement ps = con.prepareStatement("update question set statement=? , options=?, answer=?, subjectId=? where id=?");
+            ps.setString(1, this.statement);
+            ps.setString(2, this.options);
+            ps.setString(3, this.answer);
+            ps.setString(4, this.subjectId);
+            ps.setString(5, this.id);
+            ps.executeUpdate();
+            System.out.println("questionEntity: question updated successfully...");
+            JOptionPane.showMessageDialog(null, "Question Updated Successfully...");
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                con.close();
+                System.out.println("questionEntity: connection closed");
+            } catch (SQLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
 }
