@@ -75,6 +75,11 @@ public class Question {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
+    @Override
+    public String toString() {
+        return "Question{" + "id=" + id + ", subjectId=" + subjectId + ", statement=" + statement + ", options=" + options + ", answer=" + answer + ", deleted=" + deleted + ", database_Connection=" + database_Connection + '}';
+    }
     
     Database_Connection database_Connection = new Database_Connection();
     

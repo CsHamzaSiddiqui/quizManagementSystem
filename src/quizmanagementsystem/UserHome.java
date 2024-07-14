@@ -5,17 +5,41 @@
  */
 package quizmanagementsystem;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPanel;
+import quizmanagementsystem.entities.Subject;
+
 /**
  *
- * @author Hamza.Siddique
+ * @author Hassaan.Siddique
  */
 public class UserHome extends javax.swing.JFrame {
-
+    
+    List<Subject> subjectList = new ArrayList<>();
+    DefaultComboBoxModel<String> subjectModel = new DefaultComboBoxModel<>();
+    HashMap<String, Subject> subjectMap = new HashMap<>();
+    Quiz quiz = new Quiz();
     /**
      * Creates new form AdminHome
      */
     public UserHome() {
         initComponents();
+        subjectModel.addElement("Select Subject Name");
+        subjectList = new Subject().getAll();
+        for (Subject sub: subjectList) {
+            subjectMap.put(sub.getName(), sub);
+            subjectModel.addElement(sub.getName());
+        }
+        selectSubject.setModel(subjectModel);
+        
+        home.add(quiz);
+        quiz.setVisible(false);
+        quiz.setBackground(new java.awt.Color(102, 102, 102));
+        quiz.setBounds(0, 0, 1500, 700);
+        
     }
 
     /**
@@ -29,11 +53,17 @@ public class UserHome extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jButton3 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        header = new javax.swing.JLabel();
+        home = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        selectSubject = new javax.swing.JComboBox();
+        startTest = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -43,34 +73,70 @@ public class UserHome extends javax.swing.JFrame {
 
         jPanel1.setLayout(null);
 
-        jButton3.setText("Logout");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-logout-52.png"))); // NOI18N
+        jButton3.setBorderPainted(false);
+        jButton3.setContentAreaFilled(false);
+        jButton3.setDefaultCapable(false);
+        jButton3.setFocusPainted(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton3);
-        jButton3.setBounds(1770, 100, 71, 25);
+        jButton3.setBounds(1740, 80, 50, 50);
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("User Dashboard");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(570, 50, 690, 60);
+        header.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
+        header.setForeground(new java.awt.Color(255, 255, 255));
+        header.setText("User Dashboard");
+        jPanel1.add(header);
+        header.setBounds(770, 50, 580, 110);
+
+        home.setLayout(null);
 
         mainPanel.setBackground(new java.awt.Color(102, 102, 102));
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-setting-100.png"))); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Instructions:");
 
-        jButton6.setBackground(new java.awt.Color(255, 255, 255));
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-add-properties-100.png"))); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Wellcome !");
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-add-properties-100 (1).png"))); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jTextArea1.setEditable(false);
+        jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Monospaced", 1, 24)); // NOI18N
+        jTextArea1.setForeground(new java.awt.Color(255, 255, 255));
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Select \"Subject\" and click on \"Start Test\" to start the quiz.\nThe quiz consists of multiple-choice questions.\nYou must complete the quiz in one sitting. Once started, the timer will not pause.\nUse the \"Next\" and \"Previous\" buttons to navigate between questions.\nReview all your answers before submitting the quiz.\nClick the “Submit” button only when you are sure you have completed the quiz.\nFor any queries regarding your results, contact the quiz administrator at 03130884564.\nThis quiz must be completed independently. Do not collaborate with others.");
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("We wish you the best of luck in your quiz. Stay calm, focus, and do your best.");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Subject Name");
+
+        selectSubject.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        selectSubject.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Subject Name" }));
+        selectSubject.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                selectSubjectItemStateChanged(evt);
+            }
+        });
+
+        startTest.setBackground(new java.awt.Color(102, 102, 0));
+        startTest.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        startTest.setForeground(new java.awt.Color(255, 255, 255));
+        startTest.setText("Start Test");
+        startTest.setEnabled(false);
+        startTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                startTestActionPerformed(evt);
             }
         });
 
@@ -78,37 +144,70 @@ public class UserHome extends javax.swing.JFrame {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(561, 561, 561))
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(386, 386, 386)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(382, 382, 382))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(105, 105, 105)
+                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1306, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(235, 235, 235)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1003, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(485, 485, 485)
+                        .addComponent(jLabel5)
+                        .addGap(99, 99, 99)
+                        .addComponent(selectSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(567, 567, 567)
+                        .addComponent(startTest, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(89, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(230, 230, 230)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(347, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(selectSubject)))
+                .addGap(47, 47, 47)
+                .addComponent(startTest, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
 
-        jPanel1.add(mainPanel);
-        mainPanel.setBounds(200, 200, 1500, 700);
+        home.add(mainPanel);
+        mainPanel.setBounds(0, 0, 1500, 700);
 
-        jButton5.setText("Back");
+        jPanel1.add(home);
+        home.setBounds(170, 180, 1500, 700);
+
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-back-60.png"))); // NOI18N
+        jButton5.setBorderPainted(false);
+        jButton5.setContentAreaFilled(false);
+        jButton5.setFocusPainted(false);
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton5);
-        jButton5.setBounds(60, 100, 59, 25);
+        jButton5.setBounds(70, 90, 50, 50);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/loginback.jpg"))); // NOI18N
         jPanel1.add(jLabel2);
@@ -137,12 +236,27 @@ public class UserHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        mainPanel.setVisible(true);
+        quiz.setVisible(false);
+        header.setText("User Dashboard");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void selectSubjectItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_selectSubjectItemStateChanged
+        if(selectSubject.getSelectedIndex() == 0) {
+            startTest.setEnabled(false);
+        } else {
+            startTest.setEnabled(true);
+        }
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_selectSubjectItemStateChanged
+
+    private void startTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTestActionPerformed
+        mainPanel.setVisible(false);
+        quiz.setSubject(subjectMap.get((String) selectSubject.getSelectedItem()));
+        quiz.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_startTestActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,14 +295,20 @@ public class UserHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel header;
+    private javax.swing.JPanel home;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JComboBox selectSubject;
+    private javax.swing.JButton startTest;
     // End of variables declaration//GEN-END:variables
 }
