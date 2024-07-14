@@ -82,7 +82,11 @@ public class User {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
-    
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", name=" + name + ", userName=" + userName + ", password=" + password + ", email=" + email + ", role=" + role + ", deleted=" + deleted + ", database_Connection=" + database_Connection + '}';
+    }
     
     Database_Connection database_Connection = new Database_Connection();
     
@@ -100,6 +104,30 @@ public class User {
             ps.executeUpdate();
             System.out.println("userEntity: user added successfully...");
             JOptionPane.showMessageDialog(null, "User Registered Successfully...");
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }finally {
+            try {
+                con.close();
+                System.out.println("userEntity: connection closed");
+            } catch (SQLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public void update(){
+        Connection con = database_Connection.db_connction();
+        try {
+            PreparedStatement ps = con.prepareStatement("Update user set username=? and password=? and name=? and email=? where id=?");
+            ps.setString(1, this.userName);
+            ps.setString(2, this.password);
+            ps.setString(3, this.name);
+            ps.setString(4, this.email);
+            ps.setString(5, this.id);
+            ps.executeUpdate();
+            System.out.println("userEntity: user updated successfully...");
+            JOptionPane.showMessageDialog(null, "User updated successfully...!");
         } catch (SQLException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }finally {

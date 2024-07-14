@@ -51,6 +51,7 @@ public class Quiz extends javax.swing.JPanel {
     public void setSubject(Subject subject) {
         clear();
         next.setText("Next");
+        next.setEnabled(true);
         previous.setEnabled(false);
         this.subject = subject;
         minutes = 0;
