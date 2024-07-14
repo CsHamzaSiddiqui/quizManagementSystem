@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JPanel;
 import quizmanagementsystem.entities.Subject;
 
 /**
@@ -22,6 +21,7 @@ public class UserHome extends javax.swing.JFrame {
     DefaultComboBoxModel<String> subjectModel = new DefaultComboBoxModel<>();
     HashMap<String, Subject> subjectMap = new HashMap<>();
     Quiz quiz = new Quiz();
+    Settings setting = new Settings();
     /**
      * Creates new form AdminHome
      */
@@ -39,6 +39,11 @@ public class UserHome extends javax.swing.JFrame {
         quiz.setVisible(false);
         quiz.setBackground(new java.awt.Color(102, 102, 102));
         quiz.setBounds(0, 0, 1500, 700);
+        
+        home.add(setting);
+        setting.setVisible(false);
+        setting.setBackground(new java.awt.Color(102, 102, 102));
+        setting.setBounds(0, 0, 1500, 700);
         
     }
 
@@ -64,6 +69,8 @@ public class UserHome extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         selectSubject = new javax.swing.JComboBox();
         startTest = new javax.swing.JButton();
+        settins = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jButton5 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
@@ -95,14 +102,19 @@ public class UserHome extends javax.swing.JFrame {
         home.setLayout(null);
 
         mainPanel.setBackground(new java.awt.Color(102, 102, 102));
+        mainPanel.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Instructions:");
+        mainPanel.add(jLabel1);
+        jLabel1.setBounds(100, 100, 142, 22);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Wellcome !");
+        mainPanel.add(jLabel3);
+        jLabel3.setBounds(740, 40, 199, 44);
 
         jTextArea1.setEditable(false);
         jTextArea1.setBackground(new java.awt.Color(102, 102, 102));
@@ -113,13 +125,20 @@ public class UserHome extends javax.swing.JFrame {
         jTextArea1.setText("Select \"Subject\" and click on \"Start Test\" to start the quiz.\nThe quiz consists of multiple-choice questions.\nYou must complete the quiz in one sitting. Once started, the timer will not pause.\nUse the \"Next\" and \"Previous\" buttons to navigate between questions.\nReview all your answers before submitting the quiz.\nClick the “Submit” button only when you are sure you have completed the quiz.\nFor any queries regarding your results, contact the quiz administrator at 03130884564.\nThis quiz must be completed independently. Do not collaborate with others.");
         jScrollPane1.setViewportView(jTextArea1);
 
+        mainPanel.add(jScrollPane1);
+        jScrollPane1.setBounds(100, 140, 1306, 303);
+
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("We wish you the best of luck in your quiz. Stay calm, focus, and do your best.");
+        jLabel4.setText("OR");
+        mainPanel.add(jLabel4);
+        jLabel4.setBounds(650, 570, 70, 29);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Subject Name");
+        mainPanel.add(jLabel5);
+        jLabel5.setBounds(380, 510, 109, 38);
 
         selectSubject.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         selectSubject.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Select Subject Name" }));
@@ -128,6 +147,8 @@ public class UserHome extends javax.swing.JFrame {
                 selectSubjectItemStateChanged(evt);
             }
         });
+        mainPanel.add(selectSubject);
+        selectSubject.setBounds(530, 500, 269, 50);
 
         startTest.setBackground(new java.awt.Color(102, 102, 0));
         startTest.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -139,57 +160,26 @@ public class UserHome extends javax.swing.JFrame {
                 startTestActionPerformed(evt);
             }
         });
+        mainPanel.add(startTest);
+        startTest.setBounds(850, 500, 181, 50);
 
-        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
-        mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(561, 561, 561))
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1306, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(235, 235, 235)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 1003, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(485, 485, 485)
-                        .addComponent(jLabel5)
-                        .addGap(99, 99, 99)
-                        .addComponent(selectSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(567, 567, 567)
-                        .addComponent(startTest, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(89, Short.MAX_VALUE))
-        );
-        mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(selectSubject)))
-                .addGap(47, 47, 47)
-                .addComponent(startTest, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
-        );
+        settins.setBackground(new java.awt.Color(102, 102, 0));
+        settins.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        settins.setForeground(new java.awt.Color(255, 255, 255));
+        settins.setText("Goto Settings");
+        settins.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                settinsActionPerformed(evt);
+            }
+        });
+        mainPanel.add(settins);
+        settins.setBounds(580, 630, 181, 50);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("We wish you the best of luck in your quiz. Stay calm, focus, and do your best.");
+        mainPanel.add(jLabel6);
+        jLabel6.setBounds(230, 450, 1003, 29);
 
         home.add(mainPanel);
         mainPanel.setBounds(0, 0, 1500, 700);
@@ -237,6 +227,7 @@ public class UserHome extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         mainPanel.setVisible(true);
+        setting.setVisible(false);
         quiz.setVisible(false);
         header.setText("User Dashboard");
         // TODO add your handling code here:
@@ -254,9 +245,18 @@ public class UserHome extends javax.swing.JFrame {
     private void startTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startTestActionPerformed
         mainPanel.setVisible(false);
         quiz.setSubject(subjectMap.get((String) selectSubject.getSelectedItem()));
+        header.setText(selectSubject.getSelectedItem()+" Quiz");
         quiz.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_startTestActionPerformed
+
+    private void settinsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settinsActionPerformed
+        mainPanel.setVisible(false);
+        header.setText("User Settings");
+        setting.clear();
+        setting.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_settinsActionPerformed
 
     /**
      * @param args the command line arguments
@@ -304,11 +304,13 @@ public class UserHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JComboBox selectSubject;
+    private javax.swing.JButton settins;
     private javax.swing.JButton startTest;
     // End of variables declaration//GEN-END:variables
 }

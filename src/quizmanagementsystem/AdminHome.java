@@ -15,6 +15,7 @@ public class AdminHome extends javax.swing.JFrame {
     
     AddQuestion addQuestion = new AddQuestion();
     AddSubject addSubject = new AddSubject();
+    Settings setting = new Settings();
     /**
      * Creates new form AdminHome
      */
@@ -30,6 +31,11 @@ public class AdminHome extends javax.swing.JFrame {
         addSubject.setVisible(false);
         addSubject.setBackground(new java.awt.Color(102, 102, 102));
         addSubject.setBounds(0, 0, 1500, 700);
+        
+        home.add(setting);
+        setting.setVisible(false);
+        setting.setBackground(new java.awt.Color(102, 102, 102));
+        setting.setBounds(0, 0, 1500, 700);
     }
 
     /**
@@ -84,6 +90,11 @@ public class AdminHome extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-setting-100.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton6.setBackground(new java.awt.Color(255, 255, 255));
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8-add-properties-100.png"))); // NOI18N
@@ -172,6 +183,7 @@ public class AdminHome extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         addQuestion.setVisible(false);
         addSubject.setVisible(false);
+        setting.setVisible(false);
         mainPanel.setVisible(true);
         header.setText("Admin Dashboard");
         // TODO add your handling code here:
@@ -190,6 +202,13 @@ public class AdminHome extends javax.swing.JFrame {
         header.setText("Subject Management");
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+       mainPanel.setVisible(false);
+       setting.setVisible(true);
+       header.setText("Admin Settings");
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
